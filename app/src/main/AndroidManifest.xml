@@ -20,6 +20,10 @@
         <service
             android:name=".server.BookManagerServer"
             android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".server.MyService"
+            android:enabled="true"
             android:exported="true"></service>
     </application>
 
