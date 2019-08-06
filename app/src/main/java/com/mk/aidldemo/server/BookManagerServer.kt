@@ -13,11 +13,11 @@ class BookManagerServer : Service() {
     private val mBinder = object : IBookManager2.Stub(){
 
         override fun getBookList(): MutableList<Book> {
-            return bookList
+            return mBookeList
         }
 
         override fun addBook(book: Book?) {
-            book?.let { bookList.add(it) }
+            book?.let { mBookeList.add(it) }
         }
 
 //        override fun onTransact(code: Int, data: Parcel?, reply: Parcel?, flags: Int): Boolean {
@@ -28,8 +28,6 @@ class BookManagerServer : Service() {
     }
 
     override fun onBind(intent: Intent): IBinder? {
-//        // TODO: Return the communication channel to the service.
-//        throw UnsupportedOperationException("Not yet implemented")
         return mBinder
     }
 

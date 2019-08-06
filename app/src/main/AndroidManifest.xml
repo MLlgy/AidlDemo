@@ -20,6 +20,7 @@
         <service
             android:name=".server.MyServer"
             android:enabled="true"
+            android:process=":remote"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.mk.aidldemo.IBookManager" />
@@ -29,6 +30,7 @@
         <service
             android:name=".server.BookManagerServer"
             android:enabled="true"
+            android:process=":book_manager_server"
             android:exported="true">
             <!--<intent-filter>-->
                 <!--<action android:name="com.mk.aidldemo.IBookManager" />-->
