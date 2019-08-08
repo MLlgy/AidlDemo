@@ -5,6 +5,12 @@
 package com.mk.aidldemo.server;
 // Declare any non-default types here with import statements
 
+import android.util.Log;
+
+import com.mk.aidldemo.util.ProcessUtils;
+
+import static android.webkit.ConsoleMessage.MessageLevel.LOG;
+
 public interface IBookManager2 extends android.os.IInterface {
     /**
      * Local-side IPC implementation stub class.
@@ -27,6 +33,17 @@ public interface IBookManager2 extends android.os.IInterface {
             if ((obj == null)) {
                 return null;
             }
+            /**
+             * queryLocalInterface
+             *
+             * Attempt to retrieve a local implementation of an interface
+             * for this Binder object.  If null is returned, you will need
+             * to instantiate a proxy class to marshall calls through
+             * the transact() method.
+             *
+             * 对于这个绑定对象,尝试检索本地接口的实现.如果为 null，你需要初始化一个代理类，
+             * 用它来调用 transact() 方法。
+             */
             android.os.IInterface iin = obj.queryLocalInterface(DESCRIPTOR);
             if (((iin != null) && (iin instanceof IBookManager2))) {
                 return ((IBookManager2) iin);
@@ -39,6 +56,9 @@ public interface IBookManager2 extends android.os.IInterface {
             return this;
         }
 
+        /**
+         * 运行在线程池中
+         */
         @Override
         public boolean onTransact(int code, android.os.Parcel data, android.os.Parcel reply, int flags) throws android.os.RemoteException {
             String descriptor = DESCRIPTOR;
@@ -51,6 +71,7 @@ public interface IBookManager2 extends android.os.IInterface {
                     data.enforceInterface(descriptor);
                     java.util.List<com.mk.aidldemo.Book> _result = this.getBookList();
                     reply.writeNoException();
+                    Log.e("process onTransact list", ProcessUtils.getCurrentProcessName());
                     reply.writeTypedList(_result);
                     return true;
                 }
@@ -62,7 +83,9 @@ public interface IBookManager2 extends android.os.IInterface {
                     } else {
                         _arg0 = null;
                     }
+                    // Service 中 onBinder 方法中返回的 Binder 对象值。
                     this.addBook(_arg0);
+                    Log.e("process onTransact add", ProcessUtils.getCurrentProcessName());
                     reply.writeNoException();
                     return true;
                 }
@@ -90,6 +113,9 @@ public interface IBookManager2 extends android.os.IInterface {
                 return DESCRIPTOR;
             }
 
+            /**
+             * 运行在客户端
+             */
             @Override
             public java.util.List<com.mk.aidldemo.Book> getBookList() throws android.os.RemoteException {
                 android.os.Parcel _data = android.os.Parcel.obtain();
@@ -99,6 +125,7 @@ public interface IBookManager2 extends android.os.IInterface {
                     _data.writeInterfaceToken(DESCRIPTOR);
                     //通过 transact 将数据传给 Binder 的 Server 端，实现了跨进程，但是最终还是会调用 Stub 的 onTransact() 方法，但是在 Server 端
                     // 运算结果会通过 _reply 传递回来
+                    Log.e("process proxy list", ProcessUtils.getCurrentProcessName());
                     mRemote.transact(Stub.TRANSACTION_getBookList, _data, _reply, 0);
                     _reply.readException();
                     _result = _reply.createTypedArrayList(com.mk.aidldemo.Book.CREATOR);
@@ -109,6 +136,9 @@ public interface IBookManager2 extends android.os.IInterface {
                 return _result;
             }
 
+            /**
+             * 运行在客户端
+             */
             @Override
             public void addBook(com.mk.aidldemo.Book book) throws android.os.RemoteException {
                 android.os.Parcel _data = android.os.Parcel.obtain();
@@ -121,6 +151,7 @@ public interface IBookManager2 extends android.os.IInterface {
                     } else {
                         _data.writeInt(0);
                     }
+                    Log.e("process proxy add", ProcessUtils.getCurrentProcessName());
                     mRemote.transact(Stub.TRANSACTION_addBook, _data, _reply, 0);
                     _reply.readException();
                 } finally {

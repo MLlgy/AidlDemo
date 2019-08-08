@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.Toast
 import com.mk.aidldemo.server.IBookManager2
 import com.mk.aidldemo.server.MyServer
+import com.mk.aidldemo.util.ProcessUtils
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -30,8 +31,10 @@ class MainActivity : AppCompatActivity() {
          * service 端对象 service
          */
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            // 如果在同一个进程中就为 Stub 对象，不在一个进程为 Proxy 对象
+//           此时的 service 为 Service 中的 onBinder 方法返回的 IBinder 对象。
             Toast.makeText(baseContext, "onServiceConnected", Toast.LENGTH_SHORT).show()
-            // 如果在同一个进程中就为 Stub 对象，不在一个进程中为 Proxy 对象
+            Log.e("process binderService",ProcessUtils.getCurrentProcessName())
             bookManager = IBookManager2.Stub.asInterface(service)
         }
     }
@@ -39,7 +42,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
     }
 
 
@@ -49,10 +51,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun addBook(view: View) {
+        Log.e("process add ",ProcessUtils.getCurrentProcessName())
         addBook()
     }
 
     fun getBookList(view: View) {
+        Log.e("process getBookList ",ProcessUtils.getCurrentProcessName())
         getBookList()
     }
 

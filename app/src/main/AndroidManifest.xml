@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name="com.mk.aidldemo.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,9 +22,9 @@
             android:enabled="true"
             android:process=":remote"
             android:exported="true">
-            <intent-filter>
-                <action android:name="com.mk.aidldemo.IBookManager" />
-            </intent-filter>
+<!--            <intent-filter>-->
+<!--                <action android:name="com.mk.aidldemo.IBookManager" />-->
+<!--            </intent-filter>-->
         </service>
 
         <service
